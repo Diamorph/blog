@@ -33,7 +33,9 @@ public class PostServiceImpl implements PostService {
     }
 
     public PostDTO createPost(PostDTO postDTO) {
-        Post savedPost = save(convertToEntity(postDTO));
+        Post post = convertToEntity(postDTO);
+        System.out.println(post);
+        Post savedPost = save(post);
         return convertToDto(savedPost);
     }
 

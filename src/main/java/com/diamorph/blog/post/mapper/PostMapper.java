@@ -13,9 +13,9 @@ public interface PostMapper {
 
     PostMapper INSTANCE = Mappers.getMapper( PostMapper.class );
 
-    Post postDtoToPost(PostDTO postDto);
+    Post toPost(PostDTO postDto);
 
-    PostDTO postToPostDto(Post post);
+    PostDTO toPostDTO(Post post);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updatePostFromPostDto(PostDTO dto, @MappingTarget Post entity);
