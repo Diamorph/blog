@@ -38,14 +38,14 @@ public class PostServiceImpl implements PostService {
     }
 
     public PostDTO updatePost(int id, PostDTO postDTO) {
-        retrievePostById(id);
+        existsById(id);
         Post updatedPost = convertToEntity(postDTO);
         updatedPost.setId(id);
         return convertToDto(save(updatedPost));
     }
 
     public void deletePost(int id) {
-        this.retrievePostById(id);
+        existsById(id);
         postRepository.deleteById(id);
     }
 
@@ -73,6 +73,13 @@ public class PostServiceImpl implements PostService {
             throw new PostNotFoundException("Post not Found: " + id);
         }
         return post.get();
+    }
+
+    private boolean existsById(int id) {
+        if (!postRepository.existsById(id)) {
+            throw new PostNotFoundException("Post not Found: " + id);
+        }
+        return true;
     }
 
     private Optional<Post> findById(Integer id) {
