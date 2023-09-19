@@ -1,4 +1,4 @@
-package com.diamorph.blog.exeption;
+package com.diamorph.blog.exception;
 
 import java.time.LocalDateTime;
 

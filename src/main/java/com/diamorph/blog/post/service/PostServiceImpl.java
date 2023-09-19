@@ -1,11 +1,10 @@
 package com.diamorph.blog.post.service;
 
-import com.diamorph.blog.exeption.BadRequestException;
+import com.diamorph.blog.exception.BadRequestException;
 import com.diamorph.blog.jpa.PostRepository;
 import com.diamorph.blog.post.dto.PostDTO;
 import com.diamorph.blog.post.exception.PostNotFoundException;
 import com.diamorph.blog.post.model.Post;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
@@ -15,42 +14,51 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@AllArgsConstructor
 @Service
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
-
     private ModelMapper modelMapper;
 
+    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
+        this.postRepository = postRepository;
+        this.modelMapper = modelMapper;
+    }
+
+    @Override
     public List<PostDTO> retrievePosts() {
         List<Post> postList = findAll();
         return postList.stream().map(this::convertToDto).toList();
     }
 
+    @Override
     public PostDTO retrievePostDtoById(int id) {
         return convertToDto(retrievePostById(id));
     }
 
+    @Override
     public PostDTO createPost(PostDTO postDTO) {
         Post post = convertToEntity(postDTO);
-        System.out.println(post);
+        System.out.println("Converted Post: " + post);
         Post savedPost = save(post);
         return convertToDto(savedPost);
     }
 
+    @Override
     public PostDTO updatePost(int id, PostDTO postDTO) {
-        existsById(id);
+        validateExistenceById(id);
         Post updatedPost = convertToEntity(postDTO);
         updatedPost.setId(id);
         return convertToDto(save(updatedPost));
     }
 
+    @Override
     public void deletePost(int id) {
-        existsById(id);
+        validateExistenceById(id);
         postRepository.deleteById(id);
     }
 
+    @Override
     public void updatePostPartially(int id, Map<String, Object> fields) {
         Post post = this.retrievePostById(id);
         fields.forEach((k, v) -> {
@@ -77,11 +85,10 @@ public class PostServiceImpl implements PostService {
         return post.get();
     }
 
-    private boolean existsById(int id) {
+    private void validateExistenceById(int id) {
         if (!postRepository.existsById(id)) {
             throw new PostNotFoundException("Post not Found: " + id);
         }
-        return true;
     }
 
     private Optional<Post> findById(Integer id) {

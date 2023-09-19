@@ -19,11 +19,4 @@ public interface PostService {
 
     void updatePostPartially(int id, Map<String, Object> fields);
 
-    private PostDTO convertToDto(Post post) {
-        return new PostDTO();
-    }
-
-    private Post convertToEntity(PostDTO postDTO) {
-        return new Post();
-    }
 }
