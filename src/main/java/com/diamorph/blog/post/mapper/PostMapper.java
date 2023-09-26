@@ -1,5 +1,6 @@
 package com.diamorph.blog.post.mapper;
 
+import com.diamorph.blog.post.dto.PostCreateDto;
 import com.diamorph.blog.post.dto.PostDTO;
 import com.diamorph.blog.post.model.Post;
 import org.mapstruct.Mapper;
@@ -10,7 +11,9 @@ public interface PostMapper {
 
     PostMapper INSTANCE = Mappers.getMapper( PostMapper.class );
 
+    PostDTO toPostDTO(Post post);
+
     Post toPost(PostDTO postDto);
 
-    PostDTO toPostDTO(Post post);
+    Post toPost(PostCreateDto postCreateDto);
 }

@@ -1,5 +1,6 @@
 package com.diamorph.blog.user;
 
+import com.diamorph.blog.user.dto.UserCreateDto;
 import com.diamorph.blog.user.dto.UserDto;
 import com.diamorph.blog.user.service.UserServiceImpl;
 import jakarta.validation.Valid;
@@ -24,13 +25,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserCreateDto userDto) {
         UserDto createdUser = userService.createUser(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable int id, @Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable int id, @Valid @RequestBody UserCreateDto userDto) {
         UserDto updatedUser = userService.updateUser(id, userDto);
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }

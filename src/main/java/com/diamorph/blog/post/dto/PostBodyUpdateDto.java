@@ -9,16 +9,8 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class PostDTO {
-    private int id;
-
-    @NotBlank(message = "Title: Must not be blank")
-    @Length(min = 3, message = "Title: Must have at least 3 characters")
-    private String title;
-
+public class PostBodyUpdateDto {
     @NotBlank(message = "Body: Must not be blank")
     @Length(min = 3, message = "Body: Must have at least 3 characters")
     private String body;
-
-    private int userId;
 }

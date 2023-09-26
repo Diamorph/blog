@@ -1,6 +1,7 @@
 package com.diamorph.blog.user.service;
 
-import com.diamorph.blog.jpa.UserRepository;
+import com.diamorph.blog.user.dto.UserCreateDto;
+import com.diamorph.blog.user.jpa.UserRepository;
 import com.diamorph.blog.user.dto.UserDto;
 import com.diamorph.blog.user.exception.DuplicateEmailException;
 import com.diamorph.blog.user.exception.UserNotFoundException;
@@ -29,17 +30,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) {
-        User user = convertToEntity(userDto);
+    public UserDto createUser(UserCreateDto userCreateDto) {
+        User user = convertToEntity(userCreateDto);
         User savedUser = save(user);
         return convertToDto(savedUser);
     }
 
     @Override
-    public UserDto updateUser(int id, UserDto userDto) {
-        validateExistenceById(id);
-        User user = convertToEntity(userDto);
-        user.setId(id);
+    public UserDto updateUser(int id, UserCreateDto userCreateDto) {
+        User user = retrieveUserById(id);
+        User updatedUserData = convertToEntity(userCreateDto);
+        user.setEmail(updatedUserData.getEmail());
+        user.setFirstName(updatedUserData.getFirstName());
+        user.setLastName(updatedUserData.getLastName());
+        user.setAge(updatedUserData.getAge());
         User savedUser = null;
         try {
             savedUser = save(user);
@@ -59,7 +63,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    private User retrieveUserById(int id) {
+    public User retrieveUserById(int id) {
         Optional<User> user = findById(id);
         if (user.isEmpty()) {
             throw new UserNotFoundException("User not found: " + id);
@@ -83,6 +87,5 @@ public class UserServiceImpl implements UserService {
 
     private UserDto convertToDto(User user) {return modelMapper.map(user, UserDto.class); }
 
-    private User convertToEntity(UserDto userDto) {return modelMapper.map(userDto, User.class); }
-
+    private User convertToEntity(UserCreateDto userDto) {return modelMapper.map(userDto, User.class); }
 }

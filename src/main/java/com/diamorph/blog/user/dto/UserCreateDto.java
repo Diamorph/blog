@@ -1,26 +1,16 @@
-package com.diamorph.blog.user.model;
+package com.diamorph.blog.user.dto;
 
-import com.diamorph.blog.post.model.Post;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
-
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Entity
-@Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
+public class UserCreateDto {
     @Column(length = 50, nullable = false, unique = true)
     @Email(message = "User must have a valid email address")
     private String email;
@@ -39,7 +29,4 @@ public class User {
     @Min(value = 0, message = "Age should be greater than 0")
     @Max(value = 125, message = "Age should be less than 125")
     private short age;
-
-    @OneToMany(mappedBy = "user", cascade = { CascadeType.REMOVE, CascadeType.PERSIST })
-    private List<Post> posts;
 }

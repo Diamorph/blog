@@ -1,22 +1,25 @@
 package com.diamorph.blog.post.service;
 
+import com.diamorph.blog.post.dto.PostBodyUpdateDto;
+import com.diamorph.blog.post.dto.PostCreateDto;
 import com.diamorph.blog.post.dto.PostDTO;
-import com.diamorph.blog.post.model.Post;
+import com.diamorph.blog.post.dto.PostTitleUpdateDto;
 
 import java.util.List;
-import java.util.Map;
 
 public interface PostService {
-    List<PostDTO> retrievePosts();
+    List<PostDTO> retrievePosts(int userId);
 
-    PostDTO retrievePostDtoById(int id);
+    PostDTO retrievePostDtoById(int userId, int id);
 
-    PostDTO createPost(PostDTO postDTO);
+    PostDTO createPost(int userId, PostCreateDto postDTO);
+//
+    PostDTO updatePost(int userId, int id, PostCreateDto postDTO);
 
-    PostDTO updatePost(int id, PostDTO postDTO);
+    void deletePost(int userId, int id);
 
-    void deletePost(int id);
+    void updatePostTitle(int userId, int id, PostTitleUpdateDto title);
 
-    void updatePostPartially(int id, Map<String, Object> fields);
+    void updatePostBody(int userId, int id, PostBodyUpdateDto title);
 
 }

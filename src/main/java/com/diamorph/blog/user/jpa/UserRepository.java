@@ -1,4 +1,4 @@
-package com.diamorph.blog.jpa;
+package com.diamorph.blog.user.jpa;
 
 import com.diamorph.blog.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
