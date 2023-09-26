@@ -1,12 +1,12 @@
 package com.diamorph.blog.user.service;
 
 import com.diamorph.blog.user.dto.UserCreateDto;
-import com.diamorph.blog.user.jpa.UserRepository;
 import com.diamorph.blog.user.dto.UserDto;
 import com.diamorph.blog.user.exception.DuplicateEmailException;
 import com.diamorph.blog.user.exception.UserNotFoundException;
+import com.diamorph.blog.user.jpa.UserRepository;
+import com.diamorph.blog.user.mapper.UserMapper;
 import com.diamorph.blog.user.model.User;
-import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +16,9 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    private ModelMapper modelMapper;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -85,7 +83,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    private UserDto convertToDto(User user) {return modelMapper.map(user, UserDto.class); }
+    private UserDto convertToDto(User user) {return UserMapper.INSTANCE.toUserDto(user); }
 
-    private User convertToEntity(UserCreateDto userDto) {return modelMapper.map(userDto, User.class); }
+    private User convertToEntity(UserCreateDto userDto) {return UserMapper.INSTANCE.toUser(userDto); }
 }

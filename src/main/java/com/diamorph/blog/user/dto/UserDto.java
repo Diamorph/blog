@@ -19,7 +19,7 @@ public class UserDto {
     @Column(length = 20, nullable = false)
     @NotBlank(message = "Fist name could not be empty")
     @Length(min = 3, message = "First name should have at least 3 characters")
-    private String firstName;
+    private String name;
 
     @Column(length = 20, nullable = false)
     @NotBlank(message = "Last name could not be empty")

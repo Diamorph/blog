@@ -6,11 +6,10 @@ import com.diamorph.blog.post.dto.PostDTO;
 import com.diamorph.blog.post.dto.PostTitleUpdateDto;
 import com.diamorph.blog.post.exception.PostNotFoundException;
 import com.diamorph.blog.post.jpa.PostRepository;
+import com.diamorph.blog.post.mapper.PostMapper;
 import com.diamorph.blog.post.model.Post;
 import com.diamorph.blog.user.model.User;
 import com.diamorph.blog.user.service.UserServiceImpl;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,19 +19,11 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
-    private ModelMapper modelMapper;
     private UserServiceImpl userService;
 
-    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper, UserServiceImpl userService) {
+    public PostServiceImpl(PostRepository postRepository, UserServiceImpl userService) {
         this.postRepository = postRepository;
-        this.modelMapper = modelMapper;
         this.userService = userService;
-        this.modelMapper.addMappings(new PropertyMap<Post, PostDTO>() {
-            @Override
-            protected void configure() {
-                map().setUserId(source.getUser().getId());
-            }
-        });
     }
 
     @Override
@@ -125,10 +116,10 @@ public class PostServiceImpl implements PostService {
     private List<Post> findAllByUserId(int userId) {return postRepository.findByUserId(userId);}
 
     private PostDTO convertToDto(Post post) {
-        return modelMapper.map(post, PostDTO.class);
+        return PostMapper.INSTANCE.toPostDTO(post);
     }
 
     private Post convertToEntity(PostCreateDto postDTO) {
-        return modelMapper.map(postDTO, Post.class);
+        return PostMapper.INSTANCE.toPost(postDTO);
     }
 }
